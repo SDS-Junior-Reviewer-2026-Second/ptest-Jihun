@@ -1,3 +1,9 @@
+<p align="center">
+  <img src="./jihun-developer-animated.gif"
+       alt="Jihun Developer"
+       width="100%" />
+</p>
+
 # 자기 소개, 박지훈의
 
 ## 안녕하다, 나는 2002년에 태어남.
