@@ -1,0 +1,37 @@
+# 「박지훈 열전」 페이지를 GitHub Pages로 배포한다.
+# 최초 1회, 저장소 Settings → Pages → Source 를 "GitHub Actions" 로 바꿔야 동작한다.
+name: 열전 배포
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "index.html"
+      - ".github/workflows/pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+      - id: deploy
+        uses: actions/deploy-pages@v4
+      - name: 배포 주소 기록
+        run: echo "### 열전이 갱신되었습니다 → ${{ steps.deploy.outputs.page_url }}" >> "$GITHUB_STEP_SUMMARY"
