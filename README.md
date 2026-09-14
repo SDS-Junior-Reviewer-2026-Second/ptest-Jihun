@@ -16,3 +16,5 @@ September 14 pr test
 
 # 나 지훈인데 SW 검정 다 죽었다
 pro 밑으로 집합...
+
+## 나 지훈인데 AI EXPERT 다 죽었다
