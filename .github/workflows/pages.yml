@@ -1,5 +1,7 @@
 # 「박지훈 열전」 페이지를 GitHub Pages로 배포한다.
-# 최초 1회, 저장소 Settings → Pages → Source 를 "GitHub Actions" 로 바꿔야 동작한다.
+# configure-pages 의 enablement 가 Pages 를 대신 켜 주므로 수동 설정이 필요 없다.
+# 조직 정책으로 Pages 가 막혀 있으면 이 단계에서 실패하니, 그때만
+# Settings → Pages → Source 를 "GitHub Actions" 로 직접 바꾸면 된다.
 name: 열전 배포
 
 on:
@@ -26,8 +28,11 @@ jobs:
       name: github-pages
       url: ${{ steps.deploy.outputs.page_url }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: actions/configure-pages@v5
+        with:
+          # Pages 가 꺼져 있으면 켜고 시작한다 (권한: pages: write)
+          enablement: true
       - uses: actions/upload-pages-artifact@v3
         with:
           path: .
