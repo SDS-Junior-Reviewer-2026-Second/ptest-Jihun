@@ -1,0 +1,554 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="박지훈 열전 — 자기소개 한 개에서 시작된 어록, 점심 회의록, 그리고 용 한 마리의 기록.">
+  <meta property="og:title" content="박지훈 열전">
+  <meta property="og:description" content="자기소개 한 개에서 시작된 어록, 점심 회의록, 그리고 용 한 마리의 기록.">
+  <meta property="og:type" content="website">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html { color-scheme: dark; }
+  img { max-width: 100%; }
+  [hidden] { display: none !important; }
+</style>
+<title>박지훈 열전</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Song+Myung&family=Noto+Sans+KR:wght@400;500;700&family=Nanum+Brush+Script&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  /* 먹빛 밤 — 단일 테마로 의도적으로 고정한 팔레트 */
+  :root {
+    --ink:      #14110F;
+    --ink-2:    #1B1714;
+    --ink-3:    #221C18;
+    --line:     #302720;
+    --paper:    #E8E1D4;
+    --paper-2:  #BCB1A0;
+    --paper-3:  #8C8172;
+    --jusa:     #C33A2E;
+    --jusa-dim: rgba(195, 58, 46, 0.13);
+    --geum:     #C9A227;
+    --cheong:   #6E9E93;
+
+    --display: "Song Myung", "Nanum Myeongjo", serif;
+    --body: "Noto Sans KR", system-ui, -apple-system, sans-serif;
+    --brush: "Nanum Brush Script", "Song Myung", cursive;
+    --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+
+  body {
+    margin: 0;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: var(--body);
+    font-size: 16px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    width: min(1040px, 100%);
+    margin-inline: auto;
+    padding-inline: clamp(18px, 4.5vw, 44px);
+  }
+
+  a { color: var(--paper); text-decoration-color: var(--jusa); text-underline-offset: 4px; }
+  a:focus-visible, .quote:focus-visible { outline: 2px solid var(--geum); outline-offset: 4px; }
+
+  /* ── 표제 ───────────────────────────────── */
+  .hero {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: clamp(18px, 4vw, 44px);
+    align-items: start;
+    padding-block: clamp(52px, 9vw, 104px) clamp(40px, 6vw, 72px);
+  }
+  .rail {
+    writing-mode: vertical-rl;
+    font-family: var(--display);
+    font-size: clamp(26px, 4.6vw, 46px);
+    letter-spacing: 0.26em;
+    line-height: 1;
+    white-space: nowrap;
+    height: max-content;
+    color: var(--paper-3);
+    margin: 0;
+    padding-right: 10px;
+    border-right: 1px solid var(--line);
+  }
+  h1 {
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: clamp(44px, 10vw, 92px);
+    line-height: 1.05;
+    letter-spacing: 0.02em;
+    margin: 0 0 6px;
+    text-wrap: balance;
+  }
+  .tagline {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    letter-spacing: 0.16em;
+    color: var(--jusa);
+    margin: 0 0 22px;
+  }
+  .lead {
+    font-family: var(--display);
+    font-size: clamp(19px, 2.6vw, 26px);
+    line-height: 1.6;
+    color: var(--paper);
+    max-width: 26em;
+    margin: 0 0 26px;
+    text-wrap: balance;
+  }
+  .lead em { color: var(--jusa); font-style: normal; }
+  .hero-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 22px; }
+
+  .seal {
+    flex: none;
+    width: 92px; height: 92px;
+    display: grid; place-items: center;
+    border: 3px solid var(--jusa);
+    border-radius: 5px;
+    color: var(--jusa);
+    font-family: var(--brush);
+    font-size: 46px;
+    line-height: 1;
+    padding-top: 6px;
+    background: var(--jusa-dim);
+    transform: rotate(-7deg);
+    animation: stamp 620ms cubic-bezier(.2,1.5,.4,1) both;
+  }
+  @keyframes stamp {
+    from { transform: rotate(-24deg) scale(2.6); opacity: 0; }
+    60%  { opacity: 1; }
+    to   { transform: rotate(-7deg) scale(1); opacity: 1; }
+  }
+  .seal-note {
+    font-size: 13.5px; color: var(--paper-3); margin: 0; max-width: 22em;
+  }
+
+  /* ── 절(節) ──────────────────────────────── */
+  .sec { border-top: 1px solid var(--line); padding-block: clamp(44px, 6.5vw, 80px); }
+  .eyebrow {
+    display: flex; align-items: center; gap: 12px;
+    font-family: var(--display);
+    font-size: 14px; letter-spacing: 0.42em;
+    color: var(--paper-3);
+    margin: 0 0 4px;
+  }
+  .eyebrow::before {
+    content: ""; width: 20px; height: 2px; background: var(--jusa); flex: none;
+  }
+  h2 {
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: clamp(27px, 4.4vw, 40px);
+    line-height: 1.25;
+    margin: 0 0 clamp(24px, 3.5vw, 38px);
+    text-wrap: balance;
+  }
+
+  /* ── 人物 ───────────────────────────────── */
+  .facts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+  .fact { background: var(--ink); padding: 18px 20px 20px; }
+  .fact dt {
+    font-size: 12px; letter-spacing: 0.2em; color: var(--paper-3); margin-bottom: 6px;
+  }
+  .fact dd {
+    margin: 0;
+    font-family: var(--display);
+    font-size: 23px;
+    line-height: 1.3;
+    color: var(--paper);
+  }
+  .fact dd span { font-family: var(--body); font-size: 12.5px; color: var(--paper-3); display: block; }
+
+  /* ── 野望 연표 ───────────────────────────── */
+  .chrono { list-style: none; margin: 0; padding: 0; border-left: 1px solid var(--line); }
+  .chrono li {
+    display: grid;
+    grid-template-columns: 118px 1fr auto;
+    gap: 6px 20px;
+    align-items: baseline;
+    padding: 16px 0 16px 24px;
+    position: relative;
+  }
+  .chrono li + li { border-top: 1px dashed var(--line); }
+  .chrono li::before {
+    content: ""; position: absolute; left: -4px; top: 26px;
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--ink); border: 1.5px solid var(--paper-3);
+  }
+  .chrono li[data-state="달성"]::before { background: var(--geum); border-color: var(--geum); }
+  .chrono li[data-state="진행"]::before { background: var(--cheong); border-color: var(--cheong); box-shadow: 0 0 0 4px rgba(110,158,147,.16); }
+  .when {
+    font-family: var(--mono); font-size: 12.5px; letter-spacing: 0.06em;
+    color: var(--paper-3); font-variant-numeric: tabular-nums;
+  }
+  .what { font-family: var(--display); font-size: clamp(18px, 2.4vw, 22px); line-height: 1.45; }
+  .what small { display: block; font-family: var(--body); font-size: 13px; color: var(--paper-2); line-height: 1.6; }
+  .chip {
+    font-size: 11.5px; letter-spacing: 0.14em; white-space: nowrap;
+    padding: 3px 10px; border: 1px solid currentColor; border-radius: 2px; color: var(--paper-3);
+  }
+  .chip[data-state="달성"] { color: var(--geum); }
+  .chip[data-state="진행"] { color: var(--cheong); }
+
+  /* ── 語錄 ───────────────────────────────── */
+  .pull {
+    margin: 0 0 clamp(28px, 4vw, 44px);
+    padding: clamp(26px, 4vw, 40px) clamp(22px, 4vw, 44px);
+    background: var(--ink-2);
+    border-left: 3px solid var(--jusa);
+  }
+  .pull p {
+    font-family: var(--brush);
+    font-size: clamp(40px, 9vw, 78px);
+    line-height: 1.15;
+    margin: 0 0 10px;
+    color: var(--paper);
+    text-wrap: balance;
+  }
+  .pull footer { font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; color: var(--jusa); }
+
+  .quotes {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(248px, 1fr));
+    gap: 14px;
+  }
+  .quote {
+    display: flex; flex-direction: column; justify-content: space-between; gap: 14px;
+    background: var(--ink-2);
+    border: 1px solid var(--line);
+    padding: 20px 20px 16px;
+    transition: transform 180ms ease, border-color 180ms ease;
+  }
+  .quote:hover { transform: translateY(-3px); border-color: var(--jusa); }
+  .quote blockquote { margin: 0; font-size: 15.5px; line-height: 1.7; color: var(--paper); }
+  .quote cite {
+    font-style: normal; font-family: var(--mono);
+    font-size: 11.5px; letter-spacing: 0.12em; color: var(--paper-3);
+  }
+  .quote cite b { font-weight: 500; color: var(--paper-2); }
+  .quote[data-by="지훈"] cite b { color: var(--jusa); }
+  .quote[data-by="강현"] cite b { color: var(--cheong); }
+  .quote[data-by="admin"] cite b { color: var(--geum); }
+
+  /* ── 點心 ───────────────────────────────── */
+  .thread { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--line); }
+  .thread li {
+    border-bottom: 1px solid var(--line);
+    padding: 13px 0 13px 0;
+    font-size: 15.5px;
+    display: flex; gap: 12px; align-items: baseline;
+  }
+  .thread li[data-depth="1"] { padding-left: clamp(18px, 5vw, 44px); background: var(--ink-2); }
+  .thread .mark {
+    flex: none; font-family: var(--mono); font-size: 12px; color: var(--paper-3); width: 1.4em;
+  }
+  .thread li[data-depth="1"] .mark { color: var(--jusa); }
+  .menu { color: var(--geum); }
+  .verdict {
+    margin: 22px 0 0; font-family: var(--display); font-size: 19px; color: var(--paper-2);
+  }
+  .verdict b { color: var(--paper); font-weight: 400; border-bottom: 1px solid var(--jusa); }
+
+  /* ── 守護龍 ─────────────────────────────── */
+  .dragon-box {
+    overflow-x: auto;
+    background: var(--ink-2);
+    border: 1px solid var(--line);
+    padding: clamp(14px, 3vw, 30px);
+  }
+  .dragon {
+    margin: 0;
+    font-family: var(--mono);
+    font-size: clamp(3.4px, 1.02vw, 8.4px);
+    line-height: 1.08;
+    color: var(--paper-2);
+    white-space: pre;
+  }
+  .credit {
+    margin: 12px 0 0; font-family: var(--mono); font-size: 11.5px;
+    letter-spacing: 0.1em; color: var(--paper-3);
+  }
+
+  /* ── 規則 ───────────────────────────────── */
+  .plea {
+    font-family: var(--display);
+    font-size: clamp(20px, 3vw, 28px);
+    line-height: 1.6;
+    margin: 0 0 clamp(24px, 3.5vw, 36px);
+    color: var(--paper);
+    max-width: 24em;
+  }
+  .plea span { color: var(--paper-3); font-family: var(--mono); font-size: 12px; letter-spacing: .1em; display: block; margin-top: 10px; }
+  .rules { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+  .rules li {
+    display: grid; grid-template-columns: auto 1fr; gap: 16px; align-items: baseline;
+    border: 1px solid var(--line); padding: 16px 20px; background: var(--ink-2);
+  }
+  .rules .no {
+    font-family: var(--display); font-size: 22px; color: var(--jusa); line-height: 1;
+  }
+  .rules p { margin: 0; }
+  .rules p b { font-weight: 500; }
+  .rules p small { display: block; color: var(--paper-3); font-size: 13px; margin-top: 4px; }
+
+  footer.page {
+    border-top: 1px solid var(--line);
+    padding-block: 34px 54px;
+    font-size: 13.5px;
+    color: var(--paper-3);
+    display: flex; flex-wrap: wrap; gap: 10px 26px; justify-content: space-between;
+  }
+  footer.page p { margin: 0; }
+
+  @media (max-width: 640px) {
+    .hero { grid-template-columns: 1fr; }
+    .rail { writing-mode: horizontal-tb; border-right: 0; border-left: 2px solid var(--jusa); padding: 0 0 0 10px; letter-spacing: .3em; font-size: 20px; }
+    .chrono li { grid-template-columns: 1fr auto; }
+    .chrono .when { grid-column: 1 / -1; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+  }
+</style>
+
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <p class="rail">朴志勳列傳</p>
+    <div>
+      <h1>박지훈 열전</h1>
+      <p class="tagline">2002년생 · SDS 소속 · 호칭은 「프로」</p>
+      <p class="lead">이것은 자랑이 아니라, <em>그냥 사실을 미리 알려드리는 서비스</em>인 것.</p>
+      <div class="hero-foot">
+        <div class="seal" aria-label="지훈 낙관">지훈</div>
+        <p class="seal-note">한 개의 자기소개 레포에서 시작해, 어록과 점심 메뉴와 용 한 마리까지 모이게 된 기록.</p>
+      </div>
+    </div>
+  </header>
+
+  <section class="sec">
+    <p class="eyebrow">人物</p>
+    <h2>본인이 본인을 소개한 바에 따르면</h2>
+    <dl class="facts">
+      <div class="fact"><dt>소속</dt><dd>삼성SDS<span>금융IT팀은 그다음 목적지</span></dd></div>
+      <div class="fact"><dt>취미</dt><dd>바둑<span>돌을 놓는 사람</span></dd></div>
+      <div class="fact"><dt>운동</dt><dd>탁구<span>공도 놓는 사람</span></dd></div>
+      <div class="fact"><dt>음식</dt><dd>제육<span>한식이면 대체로 해결됨</span></dd></div>
+      <div class="fact"><dt>1인분</dt><dd>두 그릇<span>본인 증언</span></dd></div>
+      <div class="fact"><dt>현 상태</dt><dd>심심함<span>「지훈아 잼얘좀」</span></dd></div>
+    </dl>
+  </section>
+
+  <section class="sec">
+    <p class="eyebrow">野望</p>
+    <h2>이미 정해져 있다는 일정표</h2>
+    <ol class="chrono">
+      <li data-state="달성">
+        <span class="when">2002</span>
+        <span class="what">세상에 등장<small>“나는 2002년에 태어난 것이다”</small></span>
+        <span class="chip" data-state="달성">달성</span>
+      </li>
+      <li data-state="달성">
+        <span class="when">지난 금요일</span>
+        <span class="what">AI Advanced 100점 정복<small>“나는 그것을 100점으로 정복했음”</small></span>
+        <span class="chip" data-state="달성">달성</span>
+      </li>
+      <li data-state="진행">
+        <span class="when">올해가 끝나기 전</span>
+        <span class="what">SW Expert, 1트 취득<small>“pro 밑으로 집합”</small></span>
+        <span class="chip" data-state="진행">진행 중</span>
+      </li>
+      <li data-state="예정">
+        <span class="when">그 다음</span>
+        <span class="what">AI Expert도 손아귀에<small>“들어올 수밖에 없는 운명이다”</small></span>
+        <span class="chip" data-state="예정">예정</span>
+      </li>
+      <li data-state="예정">
+        <span class="when">이어서</span>
+        <span class="what">금융IT팀에서 인정받는 존재<small>“이것은 필연이다”</small></span>
+        <span class="chip" data-state="예정">예정</span>
+      </li>
+      <li data-state="예정">
+        <span class="when">10년 내</span>
+        <span class="what">임원의 의자<small>“그것에 나는 앉아 있을 것으로 예상됨”</small></span>
+        <span class="chip" data-state="예정">예정</span>
+      </li>
+    </ol>
+  </section>
+
+  <section class="sec">
+    <p class="eyebrow">語錄</p>
+    <h2>커밋으로 남은 말들</h2>
+    <figure class="pull">
+      <p>나 지훈인데 나 지훈이다</p>
+      <footer>— 자기소개의 최종 형태</footer>
+    </figure>
+    <div class="quotes">
+      <div class="quote" data-by="지훈" tabindex="0">
+        <blockquote>나 지훈인데 나의 업적이 잘 기록되고 있어 흡족하다</blockquote>
+        <cite><b>지훈</b> · 최신</cite>
+      </div>
+      <div class="quote" data-by="지훈" tabindex="0">
+        <blockquote>나 지훈인데 SW 검정 다 죽었다. pro 밑으로 집합… expert 1트 안에 딴다</blockquote>
+        <cite><b>지훈</b> · 선전포고</cite>
+      </div>
+      <div class="quote" data-by="지훈" tabindex="0">
+        <blockquote>나 지훈인데 AI EXPERT 다 죽었다</blockquote>
+        <cite><b>지훈</b> · 재선전포고</cite>
+      </div>
+      <div class="quote" data-by="지훈" tabindex="0">
+        <blockquote>최연소 SW Expert = 나 박지훈</blockquote>
+        <cite><b>지훈</b> · 등식</cite>
+      </div>
+      <div class="quote" data-by="지윤" tabindex="0">
+        <blockquote>지훈아 나 꼭 논문 하나 줘야해</blockquote>
+        <cite><b>지윤</b> · 청구서</cite>
+      </div>
+      <div class="quote" data-by="지훈" tabindex="0">
+        <blockquote>나 지훈인데 내가 SDS 짱 먹는다</blockquote>
+        <cite><b>지훈</b> · 사업 계획</cite>
+      </div>
+      <div class="quote" data-by="강현" tabindex="0">
+        <blockquote>나 강현인데 지훈이 그만들 놀려라</blockquote>
+        <cite><b>강현</b> · 중재</cite>
+      </div>
+      <div class="quote" data-by="admin" tabindex="0">
+        <blockquote>나 admin인데 이제 이거 막힌다</blockquote>
+        <cite><b>admin</b> · 경고</cite>
+      </div>
+      <div class="quote" data-by="익명" tabindex="0">
+        <blockquote>이거 지훈이가 막으면 public_jihun 레포 판다</blockquote>
+        <cite><b>익명</b> · 대응책</cite>
+      </div>
+      <div class="quote" data-by="지훈" tabindex="0">
+        <blockquote>나 지훈인데 많은 사랑과 관심으로 다 write 권한 주겠다</blockquote>
+        <cite><b>지훈</b> · 대사면</cite>
+      </div>
+      <div class="quote" data-by="강현" tabindex="0">
+        <blockquote>나 강현인데 여기 레포 MR 올리면 다 승인해준다</blockquote>
+        <cite><b>강현</b> · 무제한 승인</cite>
+      </div>
+      <div class="quote" data-by="지훈" tabindex="0">
+        <blockquote>나 박지훈, 여러분의 관심과 사랑으로 레포를 열어두겠다…</blockquote>
+        <cite><b>지훈</b> · 개방 선언</cite>
+      </div>
+      <div class="quote" data-by="익명" tabindex="0">
+        <blockquote>풀렸네 개꿀 ㅋㅋㅋㅋ</blockquote>
+        <cite><b>익명</b> · 즉각 반응</cite>
+      </div>
+      <div class="quote" data-by="익명" tabindex="0">
+        <blockquote>안녕하세요 여기가 자기소개 맛집이라고 해서 왔습니다. 나 지훈인데 내가 여기 짱이다. 다 덤벼</blockquote>
+        <cite><b>익명</b> · 신규 입장</cite>
+      </div>
+      <div class="quote" data-by="지훈" tabindex="0">
+        <blockquote>나 지훈인데 너무 심심하다 지훈아 잼얘좀</blockquote>
+        <cite><b>지훈</b> · 현재 상태</cite>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <p class="eyebrow">點心</p>
+    <h2>점심 하나 고르는 데 동원된 인원</h2>
+    <ul class="thread">
+      <li data-depth="0"><span class="mark">·</span><span>저녁 뭐 먹지.</span></li>
+      <li data-depth="0"><span class="mark">·</span><span>점심은 중식이니 한식 중에 추천좀.</span></li>
+      <li data-depth="0"><span class="mark">·</span><span>두 그릇 먹어야지~</span></li>
+      <li data-depth="0"><span class="mark">·</span><span>하이 지훈훈~ 한식은 <span class="menu">김치찌개에 제육볶음</span> 먹어야지 무조건</span></li>
+      <li data-depth="1"><span class="mark">ㄴ</span><span class="menu">김치전골!!!</span></li>
+      <li data-depth="1"><span class="mark">ㄴ</span><span class="menu">곱도리탕, 삼겹김치찜</span></li>
+      <li data-depth="1"><span class="mark">ㄴ</span><span>노랗고 매콤하고 향기롭지는 않지만 <span class="menu">타지마할</span></span></li>
+      <li data-depth="0"><span class="mark">·</span><span>선생님들 회사에서 먹고 갈 거라 구내식당 메뉴 중 추천좀요. 근데 사실 그럼 김치전골 뿐인 것 같기도..</span></li>
+      <li data-depth="1"><span class="mark">ㄴ</span><span>우리가 왜 너 선생님이야</span></li>
+    </ul>
+    <p class="verdict">결론: 구내식당이므로 <b>김치전골</b>. 나머지 후보는 다음 생에.</p>
+  </section>
+
+  <section class="sec">
+    <p class="eyebrow">守護龍</p>
+    <h2>jihun.txt 아래에 살고 있는 것</h2>
+    <div class="dragon-box">
+<pre class="dragon" aria-label="ASCII 아트로 그려진 용">
+                              _,add8ba,
+                            ,d888888888b,
+                           d8888888888888b                        _,ad8ba,_
+                          d888888888888888)                     ,d888888888b,
+                          I8888888888888888 _________          ,8888888888888b
+                __________`Y88888888888888P"""""""""""baaa,__ ,888888888888888,
+            ,adP"""""""""""9888888888P""^                 ^""Y8888888888888888I
+         ,a8"^           ,d888P"888P^                           ^"Y8888888888P'
+       ,a8^            ,d8888'                                     ^Y8888888P'
+      a88'           ,d8888P'                                        I88P"^
+    ,d88'           d88888P'                                          "b,
+   ,d88'           d888888'                                            `b,
+  ,d88'           d888888I                                              `b,
+  d88I           ,8888888'            ___                                `b,
+ ,888'           d8888888          ,d88888b,              ____            `b,
+ d888           ,8888888I         d88888888b,           ,d8888b,           `b
+,8888           I8888888I        d8888888888I          ,88888888b           8,
+I8888           88888888b       d88888888888'          8888888888b          8I
+d8886           888888888       Y888888888P'           Y8888888888,        ,8b
+88888b          I88888888b      `Y8888888^             `Y888888888I        d88,
+Y88888b         `888888888b,      `""""^                `Y8888888P'       d888I
+`888888b         88888888888b,                           `Y8888P^        d88888
+ Y888888b       ,8888888888888ba,_          _______        `""^        ,d888888
+ I8888888b,    ,888888888888888888ba,_     d88888888b               ,ad8888888I
+ `888888888b,  I8888888888888888888888b,    ^"Y888P"^      ____.,ad88888888888I
+  88888888888b,`888888888888888888888888b,     ""      ad888888888888888888888'
+  8888888888888698888888888888888888888888b_,ad88ba,_,d88888888888888888888888
+  88888888888888888888888888888888888888888b,`"""^ d8888888888888888888888888I
+  8888888888888888888888888888888888888888888baaad888888888888888888888888888'
+  Y8888888888888888888888888888888888888888888888888888888888888888888888888P
+  I888888888888888888888888888888888888888888888P^  ^Y8888888888888888888888'
+  `Y88888888888888888P88888888888888888888888888'     ^88888888888888888888I
+   `Y8888888888888888 `8888888888888888888888888       8888888888888888888P'
+    `Y888888888888888  `888888888888888888888888,     ,888888888888888888P'
+     `Y88888888888888b  `88888888888888888888888I     I888888888888888888'
+       "Y8888888888888b  `8888888888888888888888I     I88888888888888888'
+         "Y88888888888P   `888888888888888888888b     d8888888888888888'
+            ^""""""""^     `Y88888888888888888888,    888888888888888P'
+                  Normand    "8888888888888888888b,   Y888888888888P^
+                  Veilleux    `Y888888888888888888b   `Y8888888P"^
+                                "Y8888888888888888P     `""""^
+                                  `"YY88888888888P'
+                                       ^""""""""'
+</pre>
+    </div>
+    <p class="credit">ASCII ART — NORMAND VEILLEUX · jihun.txt 원본 그대로</p>
+  </section>
+
+  <section class="sec">
+    <p class="eyebrow">規則</p>
+    <h2>이 레포의 단 하나뿐인 부탁</h2>
+    <p class="plea">“충돌 좀 안 나게 해주세요… 계속 충돌나서 따라가기가 힘들어요.”<span>jihun.txt 6번째 줄</span></p>
+    <ul class="rules">
+      <li><span class="no">一</span><p><b>남의 줄은 건드리지 않는다.</b><small>고치지 말고 아래에 이어 쓴다. 같은 줄을 두 사람이 만지는 순간 충돌이다.</small></p></li>
+      <li><span class="no">二</span><p><b>할 말이 길면 파일을 새로 판다.</b><small>본인 이름으로 파일 하나. jihunadd.txt가 이미 증명한 방식.</small></p></li>
+      <li><span class="no">三</span><p><b>올리기 전에 한 번 당겨온다.</b><small>git pull --rebase 후 push. 이 한 줄이 지훈의 하루를 지킨다.</small></p></li>
+    </ul>
+  </section>
+
+  <footer class="page">
+    <p>기존 파일은 한 글자도 수정하지 않았습니다. 이 페이지는 새로 추가된 것.</p>
+    <p>SDS-Junior-Reviewer-2026-Second / ptest-Jihun</p>
+  </footer>
+
+</div>
+
+</body>
+</html>

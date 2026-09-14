@@ -1,0 +1,97 @@
+# jihun.txt 6번째 줄: "충돌 좀 안 나게 해주세요... 계속 충돌나서 따라가기가 힘들어요."
+# 그 부탁을 PR마다 대신 확인해 주는 파수꾼. 절대 실패시키지 않고, 안내만 남긴다.
+name: 충돌 파수꾼
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 변경 내역 분류
+        id: scan
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+          git diff --name-status "$BASE_SHA" "$HEAD_SHA" > /tmp/changes.txt || true
+
+          added=$(awk '$1 == "A" { print $2 }' /tmp/changes.txt)
+          touched=$(awk '$1 ~ /^(M|D|R)/ { print $NF }' /tmp/changes.txt)
+          lines=$(git diff --numstat "$BASE_SHA" "$HEAD_SHA" | awk '{ s += $1 } END { print s + 0 }')
+
+          {
+            echo "added<<EOM";   echo "$added";   echo "EOM"
+            echo "touched<<EOM"; echo "$touched"; echo "EOM"
+            echo "lines=$lines"
+          } >> "$GITHUB_OUTPUT"
+
+          {
+            echo "## 충돌 파수꾼 보고"
+            echo
+            echo "이번 PR로 늘어난 자기소개 **${lines}줄**."
+            echo
+            if [ -n "$added" ]; then
+              echo "### 새로 추가된 파일"
+              echo "$added" | sed 's/^/- `/; s/$/`/'
+              echo
+            fi
+            if [ -n "$touched" ]; then
+              echo "### 기존 파일에 손댄 흔적"
+              echo "$touched" | sed 's/^/- `/; s/$/`/'
+              echo
+              echo "> 고치지 말고 아래에 이어 쓰거나, 본인 이름으로 파일을 새로 파는 쪽이 안전합니다."
+            else
+              echo "기존 파일은 한 줄도 건드리지 않았습니다. 지훈이 오늘도 편안합니다."
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: 안내 코멘트 남기기
+        if: ${{ steps.scan.outputs.touched != '' && github.event.pull_request.head.repo.full_name == github.repository }}
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const marker = '<!-- 충돌-파수꾼 -->';
+            const touched = `${{ steps.scan.outputs.touched }}`
+              .split('\n').map(s => s.trim()).filter(Boolean);
+
+            const body = [
+              marker,
+              '### 충돌 파수꾼입니다',
+              '',
+              '이번 PR이 기존 파일을 고쳤습니다.',
+              '',
+              ...touched.map(f => '- `' + f + '`'),
+              '',
+              '같은 줄을 두 사람이 만지는 순간 충돌이 납니다. 이 레포의 규칙 세 줄만 확인해 주세요.',
+              '',
+              '1. 남의 줄은 고치지 말고 **아래에 이어 쓴다**',
+              '2. 할 말이 길면 **본인 이름으로 파일을 새로 판다**',
+              '3. 올리기 전에 **`git pull --rebase`** 한 번',
+              '',
+              `자세한 내용은 [CONTRIBUTING.md](https://github.com/${context.repo.owner}/${context.repo.repo}/blob/main/CONTRIBUTING.md).`,
+              '',
+              '_막으려고 켜 둔 검사가 아니라서, 이 PR을 실패시키지는 않습니다._',
+            ].join('\n');
+
+            const { owner, repo } = context.repo;
+            const issue_number = context.issue.number;
+            const comments = await github.rest.issues.listComments({ owner, repo, issue_number, per_page: 100 });
+            const mine = comments.data.find(c => c.body && c.body.includes(marker));
+
+            if (mine) {
+              await github.rest.issues.updateComment({ owner, repo, comment_id: mine.id, body });
+            } else {
+              await github.rest.issues.createComment({ owner, repo, issue_number, body });
+            }
