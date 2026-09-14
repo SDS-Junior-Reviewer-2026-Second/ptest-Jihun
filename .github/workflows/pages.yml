@@ -1,9 +1,7 @@
 # 「박지훈 열전」 페이지를 GitHub Pages로 배포한다.
-#
-# 최초 1회만 사람 손이 필요하다.
-#   Settings → Pages → Source 를 "GitHub Actions" 로 변경.
-# GITHUB_TOKEN 으로는 Pages 사이트를 새로 만들 수 없어서(권한 없음) 자동화가 안 된다.
-# 그래서 켜지기 전까지는 실패하지 않고, 무엇을 해야 하는지만 남기고 조용히 넘어간다.
+# configure-pages 의 enablement 가 Pages 를 대신 켜 주므로 수동 설정이 필요 없다.
+# 조직 정책으로 Pages 가 막혀 있으면 이 단계에서 실패하니, 그때만
+# Settings → Pages → Source 를 "GitHub Actions" 로 직접 바꾸면 된다.
 name: 열전 배포
 
 on:
@@ -30,53 +28,15 @@ jobs:
       name: github-pages
       url: ${{ steps.deploy.outputs.page_url }}
     steps:
-      - name: Pages 설정 확인
-        id: check
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const settingsUrl =
-              `https://github.com/${context.repo.owner}/${context.repo.repo}/settings/pages`;
-            let buildType = null;
-            try {
-              const { data } = await github.rest.repos.getPages({ ...context.repo });
-              buildType = data.build_type;
-            } catch (error) {
-              if (error.status !== 404) throw error;
-            }
-
-            const ready = buildType === 'workflow';
-            core.setOutput('ready', String(ready));
-            if (ready) return;
-
-            const reason = buildType === null
-              ? 'Pages가 아직 켜져 있지 않습니다.'
-              : `Pages 소스가 "${buildType}"로 되어 있어 이 워크플로가 배포할 수 없습니다.`;
-
-            core.notice(`${reason} ${settingsUrl} 에서 Source를 "GitHub Actions"로 바꿔 주세요.`);
-            await core.summary
-              .addHeading('열전 배포를 건너뛰었습니다', 3)
-              .addRaw(reason)
-              .addBreak()
-              .addLink('Settings → Pages 에서 Source를 "GitHub Actions"로 변경', settingsUrl)
-              .addRaw(' 한 뒤, 이 워크플로를 Run workflow로 한 번 실행하면 배포됩니다.')
-              .write();
-
       - uses: actions/checkout@v5
-        if: steps.check.outputs.ready == 'true'
-
       - uses: actions/configure-pages@v5
-        if: steps.check.outputs.ready == 'true'
-
+        with:
+          # Pages 가 꺼져 있으면 켜고 시작한다 (권한: pages: write)
+          enablement: true
       - uses: actions/upload-pages-artifact@v3
-        if: steps.check.outputs.ready == 'true'
         with:
           path: .
-
       - id: deploy
-        if: steps.check.outputs.ready == 'true'
         uses: actions/deploy-pages@v4
-
       - name: 배포 주소 기록
-        if: steps.check.outputs.ready == 'true'
         run: echo "### 열전이 갱신되었습니다 → ${{ steps.deploy.outputs.page_url }}" >> "$GITHUB_STEP_SUMMARY"
