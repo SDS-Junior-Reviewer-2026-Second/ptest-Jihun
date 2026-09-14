@@ -28,7 +28,8 @@ git push -u origin feature/본인이름
 
 - **충돌 파수꾼**(`.github/workflows/conflict-guard.yml`)이 기존 파일을 고쳤는지 확인하고 안내를 남깁니다. 막는 검사가 아니라서 PR을 실패시키지 않습니다.
 - `main`에 들어간 `index.html` 변경은 **열전 배포**(`.github/workflows/pages.yml`)가 GitHub Pages로 올립니다.
-  최초 1회만 `Settings → Pages → Source`를 **GitHub Actions**로 바꿔 주세요.
+  Pages가 꺼져 있으면 워크플로가 알아서 켜므로 따로 설정할 것은 없습니다.
+  조직 정책으로 막혀 있을 때만 `Settings → Pages → Source`를 **GitHub Actions**로 직접 바꿔 주세요.
 
 ## 어록을 페이지에도 올리고 싶다면
 
