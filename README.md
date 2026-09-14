@@ -18,3 +18,5 @@ September 14 pr test
 pro 밑으로 집합...
 
 ## 나 지훈인데 AI EXPERT 다 죽었다
+
+지훈아 나 꼭 논문 하나 줘야해 - 지윤
