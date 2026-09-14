@@ -33,4 +33,4 @@ pro 밑으로 집합... expert 1트 안에 딴다
 
 # 나 admin인데 이제 이거 막힌다
 
-# 이거 지훈이가 막으면 public_jihun 레포 판다
+# 이거 지훈이가 막으면 public_jihun 레포 판다?
