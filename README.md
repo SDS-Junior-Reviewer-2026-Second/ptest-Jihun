@@ -4,6 +4,10 @@
        width="100%" />
 </p>
 
+<p align="center">
+  <a href="https://sds-junior-reviewer-2026-second.github.io/ptest-Jihun/"><b>🐉 박지훈 열전 — 페이지로 보기</b></a>
+</p>
+
 # 자기 소개, 박지훈의
 
 ## 안녕하다, 나는 2002년에 태어남.
