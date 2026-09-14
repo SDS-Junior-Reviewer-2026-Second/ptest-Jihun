@@ -84,4 +84,4 @@ pro 밑으로 집합... expert 1트 안에 딴다
 
 ---
 
-© 2002-2026 Jihun Park, All Rights Reserved. 감히 나를 모방하는 행위는 엄격히 금지되어 있는 것으로 명시하는 바이다.
+© 2002-2026 Jihun Park, All Rights Reserved. 해당 내용 전부는 박지훈 본인이 아닌 다른 사람들이 작업한 내용임을 밝힙니다.
