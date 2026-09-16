@@ -15,12 +15,3 @@ class_name = "GeminiProxy"
 [[migrations]]
 tag = "v1"
 new_sqlite_classes = ["GeminiProxy"]
-
-# Public live guestbook, isolated from the existing Gemini proxy.
-[[durable_objects.bindings]]
-name = "GUESTBOOK"
-class_name = "GuestbookRoom"
-
-[[migrations]]
-tag = "v2-guestbook"
-new_sqlite_classes = ["GuestbookRoom"]

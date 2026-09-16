@@ -678,7 +678,6 @@
 <link rel="stylesheet" href="assets/daily.css">
 <script src="assets/daily-core.js" defer></script>
 <script src="assets/daily.js" defer></script>
-<script src="assets/guestbook.js" defer></script>
 </head>
 <body>
 <div class="wrap">
@@ -695,59 +694,6 @@
       </div>
     </div>
   </header>
-
-  <nav class="daily-nav" aria-label="열전 놀이터 바로가기">
-    <a href="#word-game">言 · 지훈 꼬맨틀</a>
-    <a href="#fortune">福 · 오늘의 포춘쿠키</a>
-    <a href="#guestbook">留 · 방명록</a>
-  </nav>
-
-  <section class="sec daily-section" id="word-game" aria-labelledby="word-title">
-    <p class="eyebrow">言語 · DAILY WORD</p>
-    <h2 id="word-title">지훈 꼬맨틀 <span class="daily-badge">미니</span></h2>
-    <div class="daily-grid">
-      <div class="daily-card">
-        <p class="daily-kicker" id="word-date">매일 자정, 새로운 단어 · 한국 시간</p>
-        <p class="daily-intro">“내가 무슨 생각을 하는지, 맞혀 보시죠.”</p>
-        <p class="daily-muted">뜻이 가까울수록 높은 점수. 오늘의 단어를 찾아보세요.</p>
-        <form id="word-form" class="daily-form">
-          <label for="word-input">추측할 단어</label>
-          <div class="daily-input-row">
-            <input id="word-input" type="text" placeholder="예: 점심, 개발, 행복" maxlength="20" autocomplete="off" required aria-describedby="word-status">
-            <button class="daily-button" type="submit" id="word-submit">추측하기</button>
-          </div>
-        </form>
-        <p id="word-status" class="daily-status" role="status">단어를 입력해 첫 추측을 시작하세요.</p>
-        <div class="daily-actions">
-          <button class="daily-button secondary" type="button" id="word-hint">힌트 보기 (0/2)</button>
-          <button class="daily-button secondary" type="button" id="word-share" hidden>결과 복사</button>
-        </div>
-        <p id="word-hints" class="daily-muted"></p>
-        <div class="daily-table-wrap">
-          <table class="daily-table">
-            <caption>추측 기록 · 유사도 높은 순</caption>
-            <thead><tr><th scope="col">시도</th><th scope="col">단어</th><th scope="col">유사도</th><th scope="col">순위</th></tr></thead>
-            <tbody id="word-history"><tr><td colspan="4" class="daily-empty">아직 추측한 단어가 없어요.</td></tr></tbody>
-          </table>
-        </div>
-      </div>
-      <aside class="daily-side">
-        <p class="daily-side-mark" aria-hidden="true">言</p>
-        <h3>글자보다 의미를 좇아라.</h3>
-        <p>100점이면 정답! 순위는 이 게임의 등록 단어 중 정답과 가까운 순서입니다. 동점은 같은 순위로 표시해요.</p>
-        <details>
-          <summary>게임 안내 · 단어 사전</summary>
-          <p>원본 꼬맨틀과 별개의 미니 게임입니다. 직접 구성한 의미 태그의 코사인 유사도를 사용하며, AI 임베딩이나 원본 꼬맨틀 점수가 아닙니다. 사전에 없는 단어는 시도 횟수에 포함하지 않아요.</p>
-          <p>모두가 같은 일일 정답을 풀며, 기록은 이 브라우저에 저장됩니다. 정답은 정적 페이지의 소스에 포함되어 있으니 열어보지 않고 도전해 보세요.</p>
-          <label for="word-dictionary-filter">등록 단어 찾아보기</label>
-          <input id="word-dictionary-filter" type="search" placeholder="찾을 단어" maxlength="20">
-          <p id="word-dictionary" class="daily-dictionary"></p>
-        </details>
-        <p id="daily-storage" class="daily-muted" role="status"></p>
-      </aside>
-    </div>
-    <noscript>게임을 이용하려면 JavaScript를 켜주세요.</noscript>
-  </section>
 
   <section class="sec daily-section" id="fortune" aria-labelledby="fortune-title">
     <p class="eyebrow">吉兆 · DAILY FORTUNE</p>
@@ -766,30 +712,6 @@
       <p id="fortune-status" class="daily-status" role="status"></p>
       <p class="daily-muted">재미로 보는 오늘의 운세 · 한국 시간 자정에 새 쿠키가 준비됩니다.</p>
     </div>
-  </section>
-
-  <section class="sec daily-section" id="guestbook" aria-labelledby="guestbook-title">
-    <p class="eyebrow">留名 · LIVE GUESTBOOK</p>
-    <h2 id="guestbook-title">열전 사랑방</h2>
-    <p class="daily-muted">다녀간 인사도, 가벼운 수다도. 지금 여기 있는 사람들과 함께 남기는 방명록.</p>
-    <div class="guestbook-chat">
-      <div class="guestbook-chat-head">
-        <span><span id="guestbook-dot" class="guestbook-dot" aria-hidden="true"></span> <span id="guestbook-connection" role="status">연결 중</span></span>
-        <button type="button" class="daily-button secondary" id="guestbook-reconnect">다시 연결</button>
-      </div>
-      <div id="guestbook-entries" class="guestbook-log" role="log" aria-label="실시간 방명록 대화" aria-live="polite" aria-relevant="additions" tabindex="0">
-        <p id="guestbook-empty" class="daily-empty">사랑방에 연결하고 있어요.</p>
-      </div>
-      <button type="button" id="guestbook-latest" class="daily-button secondary" hidden>새 메시지 보기 ↓</button>
-      <form id="guestbook-form" class="guestbook-composer">
-        <div class="guestbook-name-row"><label for="guestbook-name">별명</label><input id="guestbook-name" name="name" maxlength="24" required autocomplete="nickname" placeholder="방문자" value="방문자"><span id="guestbook-count" class="daily-muted">0 / 300</span></div>
-        <label for="guestbook-message" class="daily-muted">남길 말</label>
-        <div class="guestbook-compose-row"><textarea id="guestbook-message" name="message" rows="2" maxlength="300" required placeholder="인사를 남겨보세요. Enter로 전송, Shift+Enter로 줄바꿈" aria-describedby="guestbook-note"></textarea><button id="guestbook-send" type="submit" class="daily-button" disabled>보내기 ↑</button></div>
-      </form>
-      <p id="guestbook-status" class="daily-status" role="status"></p>
-      <p id="guestbook-note" class="daily-muted">로그인 없이 별명으로 참여합니다. 별명은 인증되지 않으며, 메시지는 모든 방문자에게 공개됩니다. 최근 200개를 보관해요.</p>
-    </div>
-    <noscript>실시간 방명록을 이용하려면 JavaScript를 켜주세요.</noscript>
   </section>
 
   <section class="sec">
