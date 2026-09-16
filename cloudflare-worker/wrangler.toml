@@ -1,0 +1,17 @@
+name = "jihun-chat-proxy"
+main = "src/index.js"
+compatibility_date = "2024-09-16"
+
+# 배포 후 여기 목록에 실제 접속 도메인을 추가하세요.
+# 로컬 테스트용 localhost는 기본으로 허용되어 있습니다.
+[vars]
+ALLOWED_ORIGINS = "https://sds-junior-reviewer-2026-second.github.io,http://localhost:5566,http://127.0.0.1:5566"
+
+# Gemini API의 리전 차단 문제를 피하기 위해 북미 리전에 고정 실행되는 Durable Object
+[[durable_objects.bindings]]
+name = "GEMINI_PROXY"
+class_name = "GeminiProxy"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["GeminiProxy"]

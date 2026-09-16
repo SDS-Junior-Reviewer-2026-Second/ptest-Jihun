@@ -5,7 +5,12 @@
 </p>
 
 <p align="center">
-  <a href="https://sds-junior-reviewer-2026-second.github.io/ptest-Jihun/"><b>🐉 박지훈 열전 — 페이지로 보기</b></a>
+  <img src="https://readme-typing-svg.demolab.com?font=Noto+Sans+KR&weight=600&size=24&duration=2600&pause=900&color=C33A2E&background=00000000&center=true&vCenter=true&width=600&height=60&lines=%EB%82%98%EB%8A%94%202002%EB%85%84%EC%97%90%20%ED%83%9C%EC%96%B4%EB%82%A8;SDS%20%EC%86%8C%EC%86%8D%20Jihun%20Park%2C%20%ED%94%84%EB%A1%9C;AI%20Advanced%20100%EC%A0%90%20%EC%A0%95%EB%B3%B5;SW%20Expert%2C%20%EC%98%AC%ED%95%B4%EA%B0%80%20%EB%81%9D%EB%82%98%EA%B8%B0%20%EC%A0%84%EC%97%90;%EB%82%98%20%EC%A7%80%ED%9B%88%EC%9D%B8%EB%8D%B0%20%EB%82%98%20%EC%A7%80%ED%9B%88%EC%9D%B4%EB%8B%A4"
+       alt="박지훈 어록 타이핑 배너" />
+</p>
+
+<p align="center">
+  <a href="https://sds-junior-reviewer-2026-second.github.io/ptest-Jihun/"><b>🐉 박지훈 열전 — 페이지로 보기 (스크롤 애니메이션 + 승진 클리커 게임 수록)</b></a>
 </p>
 
 # 🤖 JihunGPT 정보 업데이트 안내

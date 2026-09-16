@@ -17,7 +17,7 @@
 <title>박지훈 열전</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Song+Myung&family=Noto+Sans+KR:wght@400;500;700&family=Nanum+Brush+Script&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Song+Myung&family=Noto+Sans+KR:wght@400;500;700&family=Nanum+Brush+Script&family=IBM+Plex+Mono:wght@400;500&family=Press+Start+2P&display=swap">
 <style>
   /* 먹빛 밤 — 단일 테마로 의도적으로 고정한 팔레트 */
   :root {
@@ -37,6 +37,7 @@
     --body: "Noto Sans KR", system-ui, -apple-system, sans-serif;
     --brush: "Nanum Brush Script", "Song Myung", cursive;
     --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    --pixel: "Press Start 2P", var(--mono);
   }
 
   body {
@@ -323,6 +324,355 @@
   @media (prefers-reduced-motion: reduce) {
     * { animation: none !important; transition: none !important; }
   }
+
+  /* ── 스크롤 등장 효과 ─────────────────────── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 700ms ease, transform 700ms ease;
+  }
+  .reveal.is-visible { opacity: 1; transform: translateY(0); }
+
+  /* ── 登壇 무한 계단 (8비트 아케이드 스타일) ───────── */
+  .pixel-corner {
+    clip-path: polygon(
+      0 8px, 8px 8px, 8px 0,
+      calc(100% - 8px) 0, calc(100% - 8px) 8px, 100% 8px,
+      100% calc(100% - 8px), calc(100% - 8px) calc(100% - 8px), calc(100% - 8px) 100%,
+      8px 100%, 8px calc(100% - 8px), 0 calc(100% - 8px)
+    );
+  }
+  .stairs {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(220px, 320px);
+    gap: clamp(20px, 4vw, 44px);
+    align-items: start;
+  }
+  .stairs-main, .stairs-side {
+    position: relative;
+    z-index: 0;
+  }
+  .stairs-main::before, .stairs-side::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--ink-3);
+    transform: translate(5px, 5px);
+    z-index: -1;
+  }
+  .stairs-main {
+    background: var(--ink-2);
+    border: 3px solid var(--paper-3);
+    padding: clamp(18px, 3vw, 26px);
+  }
+  .stairs-hud { display: flex; align-items: flex-end; gap: clamp(18px, 3vw, 34px); margin-bottom: 12px; }
+  .stairs-hud-item { display: flex; flex-direction: column; gap: 5px; }
+  .stairs-hud-item-time { flex: 1; min-width: 90px; }
+  .stairs-hud-cap {
+    font-family: var(--pixel); font-size: 8.5px; letter-spacing: 0.1em; color: var(--paper-3);
+  }
+  .stairs-hud-n {
+    font-family: var(--body); font-weight: 900; font-size: clamp(24px, 4.2vw, 32px);
+    color: #fff; font-variant-numeric: tabular-nums; line-height: 1;
+    -webkit-text-stroke: 3px var(--ink-3);
+    paint-order: stroke fill;
+  }
+  .stairs-timebar {
+    width: 100%; height: 16px; margin-bottom: 3px;
+    background: var(--ink); border: 2px solid var(--ink-3); border-radius: 9px;
+    overflow: hidden;
+  }
+  .stairs-timebar-fill {
+    height: 100%; width: 100%;
+    background: linear-gradient(90deg, #f0a83e, #e2544a);
+    transition: width 100ms linear, background 200ms ease;
+  }
+  .stairs-hud-item[data-warn="1"] .stairs-timebar-fill {
+    background: linear-gradient(90deg, #e2544a, #b52a2a);
+    animation: timebar-pulse 420ms steps(2) infinite;
+  }
+  @keyframes timebar-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: .55; }
+  }
+  .stairs-rank { font-family: var(--body); font-size: 13.5px; color: var(--paper-2); margin: 0 0 14px; }
+  .stairs-rank b { color: var(--jusa); font-weight: 500; }
+
+  .stairs-stage {
+    position: relative;
+    height: 260px;
+    overflow: hidden;
+    background: linear-gradient(180deg, #6fb9dd 0%, #a7d8ec 55%, #cdeaf3 100%);
+    border: 3px solid var(--ink-3);
+    border-radius: 16px;
+    box-shadow: inset 0 -40px 50px -25px rgba(20,40,60,.35);
+    touch-action: none;
+  }
+  .stairs-sky { position: absolute; inset: 0; overflow: hidden; }
+  .stairs-sky i {
+    position: absolute; bottom: 0; display: block;
+    background: rgba(70, 110, 140, 0.28);
+    border-radius: 2px 2px 0 0;
+  }
+  .stairs-sky i:nth-child(1) { left: 4%;  width: 15%; height: 34%; background: rgba(70,110,140,.22); }
+  .stairs-sky i:nth-child(2) { left: 20%; width: 11%; height: 52%; }
+  .stairs-sky i:nth-child(3) { left: 33%; width: 9%;  height: 30%; background: rgba(70,110,140,.18); }
+  .stairs-sky i:nth-child(4) { right: 26%; width: 13%; height: 44%; }
+  .stairs-sky i:nth-child(5) { right: 10%; width: 16%; height: 26%; background: rgba(70,110,140,.2); }
+
+  .stairs-track { position: absolute; inset: 0; transition: transform 200ms steps(6); }
+  .stairs-step {
+    position: absolute;
+    width: 10%;
+    height: 16px;
+    background: linear-gradient(180deg, #e0a868 0%, #c98a4e 55%, #a86c38 100%);
+    border-radius: 4px;
+    box-shadow: 0 4px 0 #8a5a2e, 0 -2px 0 rgba(255,255,255,.4) inset;
+    transition: left 200ms steps(6);
+  }
+  .stairs-step::before {
+    content: "";
+    position: absolute; inset: 3px 2px auto 2px; height: 3px;
+    background: rgba(120,74,32,.45);
+    border-radius: 2px;
+  }
+  .stairs-step::after {
+    content: "";
+    position: absolute; left: -3px; right: -3px; bottom: -8px; height: 10px;
+    background: linear-gradient(180deg, #b57a44 0%, #9a6535 100%);
+    border-radius: 4px;
+    z-index: -1;
+  }
+
+  .stairs-char {
+    position: absolute;
+    top: 158px;
+    width: 32px; height: 40px;
+    display: grid; place-items: center;
+    transition: left 170ms steps(3), transform 170ms steps(3);
+    filter: drop-shadow(1px 3px 2px rgba(20,30,40,.35));
+  }
+  .stairs-char svg { width: 28px; height: 36px; display: block; overflow: visible; }
+  .stairs-char .pc-cap   { fill: #d94433; }
+  .stairs-char .pc-skin  { fill: #f2c48d; }
+  .stairs-char .pc-shirt { fill: #3f8fd1; }
+  .stairs-char .pc-shorts{ fill: #d94433; }
+  .stairs-char .pc-shoe  { fill: #33291f; }
+  .stairs-char .pc-eye   { fill: #2a1f18; }
+  .stairs-char .pc-trail { fill: #e2544a; opacity: 0; }
+  .stairs-char-arrow {
+    position: absolute;
+    top: -15px; left: 50%;
+    transform: translateX(-50%);
+    font-size: 13px; line-height: 1;
+    color: var(--geum);
+    text-shadow: 0 1px 0 var(--ink-3), 0 -1px 0 var(--ink-3), 1px 0 0 var(--ink-3), -1px 0 0 var(--ink-3);
+    pointer-events: none;
+  }
+  .stairs-char.is-right { transform: scaleX(-1); }
+  .stairs-char.is-falling {
+    transition: left 240ms ease, top 480ms cubic-bezier(.5,0,1,.5), transform 480ms ease;
+    top: 280px;
+    transform: rotate(100deg);
+  }
+  .stairs-char.is-right.is-falling { transform: scaleX(-1) rotate(-100deg); }
+  @keyframes pc-bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
+  }
+  @keyframes pc-trail {
+    0%, 100% { opacity: 0; }
+    45% { opacity: .55; }
+  }
+  .stairs-char.is-walking svg { animation: pc-bounce 260ms steps(2) infinite; }
+  .stairs-char.is-walking .pc-trail { animation: pc-trail 260ms steps(2) infinite; }
+
+  .stairs-overlay {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 10px; text-align: center; padding: 20px;
+    background: rgba(16, 13, 11, 0.9);
+  }
+  .stairs-overlay[hidden] { display: none; }
+  .stairs-overlay-cap {
+    font-family: var(--pixel); font-size: 10px; letter-spacing: 0.12em; color: var(--paper-3); margin: 0;
+  }
+  .stairs-overlay-title {
+    font-family: var(--pixel); font-size: clamp(16px, 3.4vw, 22px); color: var(--geum); margin: 0;
+    text-shadow: 3px 3px 0 var(--ink-3); letter-spacing: 0.03em;
+  }
+  .stairs-overlay-sub {
+    font-family: var(--body);
+    font-size: 13px; line-height: 1.6; color: var(--cheong); max-width: 30em; margin: 4px 0 6px;
+  }
+  .stairs-overlay-sub[data-record="1"] { color: var(--geum); }
+  .stairs-btn {
+    font-family: var(--pixel);
+    font-size: 13px;
+    letter-spacing: 0.03em;
+    padding: 14px 28px;
+    background: var(--jusa);
+    color: var(--paper);
+    border: 3px solid var(--paper);
+    box-shadow: 4px 4px 0 var(--ink-3);
+    cursor: pointer;
+    transition: transform 80ms ease, box-shadow 80ms ease, background 150ms ease;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+  }
+  .stairs-btn:hover { background: #a92f24; }
+  .stairs-btn:active { transform: translate(4px, 4px); box-shadow: 0 0 0 var(--ink-3); }
+  .stairs-btn:focus-visible { outline: 2px solid var(--geum); outline-offset: 3px; }
+
+  .stairs-controls { display: flex; align-items: center; justify-content: center; gap: 22px; margin-top: 18px; }
+  .stairs-dir {
+    width: 68px; height: 68px; flex: none;
+    display: grid; place-items: center;
+    border-radius: 50%;
+    background: linear-gradient(180deg, #e8bd82 0%, #d29a4d 100%);
+    border: 3px solid #fff;
+    box-shadow: 0 5px 0 #9a6a2c, 0 6px 10px rgba(0,0,0,.35);
+    color: #fff;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    transition: background 120ms ease, transform 80ms ease, box-shadow 80ms ease;
+  }
+  .stairs-dir svg { width: 30px; height: 30px; filter: drop-shadow(1px 1px 0 rgba(0,0,0,.25)); }
+  .stairs-dir:hover { filter: brightness(1.06); }
+  .stairs-dir:active { transform: translateY(4px); box-shadow: 0 1px 0 #9a6a2c, 0 2px 6px rgba(0,0,0,.3); }
+  .stairs-dir:focus-visible { outline: 2px solid var(--geum); outline-offset: 3px; }
+  .stairs-dir[disabled] { opacity: 0.45; cursor: default; }
+  .stairs-dir-main {
+    background: linear-gradient(180deg, #6ec0ea 0%, #3f8fd1 100%);
+    box-shadow: 0 5px 0 #285f8c, 0 6px 10px rgba(0,0,0,.35);
+  }
+  .stairs-dir-main:active { box-shadow: 0 1px 0 #285f8c, 0 2px 6px rgba(0,0,0,.3); }
+  .stairs-key-hint {
+    margin: 14px 0 0; text-align: center; font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; color: var(--paper-3);
+  }
+  .stairs-key-hint b { color: var(--paper-2); }
+
+  .stairs-side {
+    background: var(--ink-2);
+    border: 3px solid var(--paper-3);
+    padding: clamp(18px, 3vw, 26px);
+  }
+  .stairs-side h3 {
+    font-family: var(--pixel); font-weight: 400; font-size: 11px;
+    letter-spacing: 0.1em; color: var(--paper-3); margin: 0 0 16px;
+  }
+  .stairs-best {
+    font-family: var(--pixel); font-size: 26px; color: var(--geum);
+    margin: 0 0 6px; text-shadow: 2px 2px 0 var(--ink-3);
+  }
+  .stairs-best small { display: block; font-family: var(--mono); font-size: 11px; color: var(--paper-3); margin-top: 6px; }
+  .stairs-share {
+    display: inline-block;
+    margin-top: 16px;
+    font-family: var(--mono); font-size: 12.5px; letter-spacing: 0.04em;
+    color: var(--cheong);
+    border-bottom: 1px solid transparent;
+  }
+  .stairs-share:hover { border-bottom-color: var(--cheong); }
+  .stairs-note {
+    margin: 16px 0 0; font-size: 11.5px; line-height: 1.6; color: var(--paper-3);
+  }
+
+  .step-pop {
+    position: fixed;
+    pointer-events: none;
+    font-family: var(--pixel);
+    color: var(--geum);
+    font-size: 11px;
+    text-shadow: 2px 2px 0 var(--ink-3);
+    z-index: 999;
+    animation: step-float 850ms steps(8) forwards;
+  }
+  @keyframes step-float {
+    from { opacity: 1; transform: translateY(0) scale(1); }
+    to   { opacity: 0; transform: translateY(-48px) scale(1.05); }
+  }
+
+  @media (max-width: 720px) {
+    .stairs { grid-template-columns: 1fr; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; }
+    .step-pop { display: none; }
+  }
+
+  /* ── 지훈봇 채팅 위젯 ──────────────────────── */
+  .chat-widget { position: fixed; right: clamp(14px, 3vw, 26px); bottom: clamp(14px, 3vw, 26px); z-index: 1000; }
+  .chat-fab {
+    width: 56px; height: 56px; border-radius: 50%;
+    background: var(--jusa); border: 1px solid var(--jusa);
+    color: var(--paper); font-family: var(--display); font-size: 16px; font-weight: 400;
+    display: grid; place-items: center;
+    cursor: pointer; box-shadow: 0 6px 20px rgba(0,0,0,.4);
+    transition: transform 150ms ease;
+  }
+  .chat-fab:hover { transform: scale(1.06); }
+  .chat-fab:focus-visible { outline: 2px solid var(--geum); outline-offset: 3px; }
+
+  .chat-panel {
+    position: absolute;
+    right: 0; bottom: 72px;
+    width: min(340px, calc(100vw - 28px));
+    max-height: min(70vh, 560px);
+    display: flex; flex-direction: column;
+    background: var(--ink-2);
+    border: 1px solid var(--line);
+    box-shadow: 0 14px 40px rgba(0,0,0,.5);
+  }
+  .chat-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 16px; border-bottom: 1px solid var(--line);
+  }
+  .chat-title { margin: 0; font-family: var(--display); font-size: 17px; color: var(--paper); }
+  .chat-sub { margin: 2px 0 0; font-family: var(--mono); font-size: 10.5px; letter-spacing: .06em; color: var(--paper-3); }
+  .chat-close {
+    background: transparent; border: 0; color: var(--paper-3); font-size: 15px; cursor: pointer; padding: 4px 6px;
+  }
+  .chat-close:hover { color: var(--paper); }
+
+  .chat-input {
+    width: 100%; box-sizing: border-box;
+    background: var(--ink); border: 1px solid var(--line); color: var(--paper);
+    font-family: var(--mono); font-size: 13px; padding: 9px 10px;
+  }
+  .chat-input:focus-visible { outline: 2px solid var(--geum); outline-offset: 1px; }
+
+  .chat-messages {
+    flex: 1; overflow-y: auto; padding: 14px 16px;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .chat-msg { max-width: 84%; padding: 9px 12px; font-size: 13.5px; line-height: 1.55; }
+  .chat-msg[data-role="user"] {
+    align-self: flex-end; background: var(--jusa-dim); border: 1px solid var(--jusa); color: var(--paper);
+  }
+  .chat-msg[data-role="bot"] {
+    align-self: flex-start; background: var(--ink); border: 1px solid var(--line); color: var(--paper);
+  }
+  .chat-msg.is-streaming::after {
+    content: "▊"; margin-left: 2px; color: var(--geum);
+    animation: chat-cursor-blink 800ms steps(2) infinite;
+  }
+  @keyframes chat-cursor-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+  .chat-msg[data-role="error"] {
+    align-self: flex-start; background: var(--ink); border: 1px solid var(--jusa); color: var(--jusa-dim);
+    color: var(--paper); font-family: var(--mono); font-size: 12px;
+  }
+
+  .chat-form { display: flex; gap: 8px; padding: 12px 16px; border-top: 1px solid var(--line); }
+  .chat-form .chat-input { flex: 1; }
+  .chat-send {
+    font-family: var(--display); font-size: 14px;
+    background: var(--jusa); color: var(--paper); border: 1px solid var(--jusa);
+    padding: 0 16px; cursor: pointer;
+  }
+  .chat-send:hover { background: #a92f24; }
+  .chat-send[disabled] { background: var(--paper-3); border-color: var(--paper-3); cursor: default; }
 </style>
 
 </head>
@@ -341,6 +691,93 @@
       </div>
     </div>
   </header>
+
+  <section class="sec">
+    <p class="eyebrow">登壇</p>
+    <h2>무한 계단 — 오르기 / 방향전환으로 임원 의자까지</h2>
+    <p class="plea" style="margin-bottom:28px;">다음 계단이 지금 방향과 같으면 <b>오르기</b>, 반대면 <b>방향전환</b>을 누르세요. 틀리면 굴러떨어지고, 시간이 다 되면 끝입니다.</p>
+
+    <div class="stairs">
+      <div class="stairs-main pixel-corner">
+        <div class="stairs-hud">
+          <div class="stairs-hud-item">
+            <span class="stairs-hud-cap">SCORE</span>
+            <span class="stairs-hud-n" id="stairsScore">0</span>
+          </div>
+          <div class="stairs-hud-item stairs-hud-item-time" id="stairsTimeItem">
+            <span class="stairs-hud-cap">TIME</span>
+            <div class="stairs-timebar"><div class="stairs-timebar-fill" id="stairsTimeFill"></div></div>
+          </div>
+        </div>
+        <p class="stairs-rank" id="stairsRank">현재 직급: <b>사원</b> · 방향: <b id="stairsFacing">왼쪽</b></p>
+
+        <div class="stairs-stage" id="stairsStage">
+          <div class="stairs-sky" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+          <div class="stairs-track" id="stairsTrack"></div>
+          <div class="stairs-char" id="stairsChar" aria-hidden="true">
+            <span class="stairs-char-arrow">◀</span>
+            <svg viewBox="0 0 7 9" shape-rendering="crispEdges">
+              <g class="pc-trail">
+                <rect x="6" y="3" width="1" height="1"></rect>
+                <rect x="6.5" y="4.5" width="1" height="1"></rect>
+                <rect x="6" y="6" width="1" height="1"></rect>
+              </g>
+              <g class="pc-cap">
+                <rect x="3" y="0" width="2" height="1"></rect>
+                <rect x="1" y="1" width="2" height="1"></rect>
+              </g>
+              <g class="pc-skin">
+                <rect x="3" y="1" width="2" height="1"></rect>
+              </g>
+              <g class="pc-eye">
+                <rect x="3" y="1" width="1" height="1"></rect>
+              </g>
+              <g class="pc-shirt">
+                <rect x="2" y="2" width="4" height="2"></rect>
+                <rect x="3" y="4" width="2" height="1"></rect>
+              </g>
+              <g class="pc-shorts">
+                <rect x="2" y="5" width="4" height="2"></rect>
+              </g>
+              <g class="pc-skin">
+                <rect x="1" y="6" width="2" height="2"></rect>
+                <rect x="4" y="6" width="2" height="2"></rect>
+              </g>
+              <g class="pc-shoe">
+                <rect x="0" y="8" width="2" height="1"></rect>
+                <rect x="5" y="8" width="2" height="1"></rect>
+              </g>
+            </svg>
+          </div>
+          <div class="stairs-overlay" id="stairsOverlay">
+            <p class="stairs-overlay-cap">ENDLESS STAIRS</p>
+            <p class="stairs-overlay-title" id="stairsOverlayTitle">무한 계단</p>
+            <p class="stairs-overlay-sub" id="stairsOverlaySub">다음 계단이 보이는 쪽과 지금 방향이 같으면 오르기, 반대면 방향전환. 맞힐 때마다 시간이 늘어나니 빠르고 정확하게 눌러야 합니다.</p>
+            <button type="button" class="stairs-btn" id="stairsStartBtn">시작</button>
+          </div>
+        </div>
+
+        <div class="stairs-controls">
+          <button type="button" class="stairs-dir" id="stairsTurnBtn" aria-label="방향전환">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 11A8 8 0 1 0 18.3 16"></path>
+              <path d="M20 5v6h-6"></path>
+            </svg>
+          </button>
+          <button type="button" class="stairs-dir stairs-dir-main" id="stairsClimbBtn" aria-label="오르기">
+            <svg viewBox="0 0 24 24" fill="#fff"><path d="M12 5l9 9h-6v6H9v-6H3z"></path></svg>
+          </button>
+        </div>
+        <p class="stairs-key-hint">◀ <b>방향전환</b> · 키보드 X ﹒﹒﹒ <b>오르기</b> ▶ · 키보드 Z</p>
+      </div>
+      <aside class="stairs-side pixel-corner">
+        <h3>HIGH SCORE</h3>
+        <p class="stairs-best" id="stairsBest">0<small>역대 최고 계단</small></p>
+        <a class="stairs-share" id="stairsShare" href="https://github.com/SDS-Junior-Reviewer-2026-Second/ptest-Jihun/issues/new" target="_blank" rel="noopener">GitHub Issue에 기록 자랑하기 →</a>
+        <p class="stairs-note">* 기록은 이 브라우저에만 저장됩니다. 다른 사람과 비교하고 싶으면 위 버튼으로 Issue에 직접 공유해 주세요.</p>
+      </aside>
+    </div>
+  </section>
 
   <section class="sec">
     <p class="eyebrow">人物</p>
@@ -468,6 +905,10 @@
         <blockquote>나 지훈인데 나의 업적이 잘 기록되고 있어 흡족하다</blockquote>
         <cite><b>지훈</b> · 감정</cite>
       </div>
+      <div class="quote" data-by="지훈" tabindex="0">
+        <blockquote>최초의 CL2로서 금융실행전략그룹의 그룹장이 될 나님이로소이다</blockquote>
+        <cite><b>지훈</b> · 새로운 야망</cite>
+      </div>
     </div>
   </section>
 
@@ -558,6 +999,424 @@ Y88888b         `888888888b,      `""""^                `Y8888888P'       d888I
   </footer>
 
 </div>
+
+<div class="chat-widget" id="chatWidget">
+  <button type="button" class="chat-fab" id="chatFab" aria-label="지훈봇과 대화하기" aria-expanded="false">
+    <span aria-hidden="true">질문</span>
+  </button>
+
+  <div class="chat-panel" id="chatPanel" hidden>
+    <header class="chat-head">
+      <div>
+        <p class="chat-title">지훈봇</p>
+        <p class="chat-sub">Gemini 기반 · 박지훈 페르소나</p>
+      </div>
+      <button type="button" class="chat-close" id="chatClose" aria-label="닫기">✕</button>
+    </header>
+
+    <div class="chat-messages" id="chatMessages"></div>
+
+    <form class="chat-form" id="chatForm">
+      <input type="text" id="chatInput" class="chat-input" placeholder="지훈이에게 말 걸기..." autocomplete="off">
+      <button type="submit" class="chat-send" id="chatSend">보내기</button>
+    </form>
+  </div>
+</div>
+
+<script>
+(function () {
+  /* ── 스크롤 등장 효과 ───────────────────── */
+  var revealEls = document.querySelectorAll('.sec');
+  revealEls.forEach(function (el) { el.classList.add('reveal'); });
+
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+    revealEls.forEach(function (el) { io.observe(el); });
+  } else {
+    revealEls.forEach(function (el) { el.classList.add('is-visible'); });
+  }
+})();
+</script>
+
+<script>
+(function () {
+  /* ── 登壇 무한 계단 (오르기 / 방향전환, 실제 게임 규칙) ───── */
+  var stage = document.getElementById('stairsStage');
+  if (!stage) return;
+
+  var RANKS = [
+    { name: '사원', at: 0 },
+    { name: '대리', at: 15 },
+    { name: '과장', at: 35 },
+    { name: '차장', at: 60 },
+    { name: '부장', at: 90 },
+    { name: '상무', at: 125 },
+    { name: '전무', at: 165 },
+    { name: '임원', at: 210 }
+  ];
+  var BEST_KEY = 'jihun-stairs-best';
+  var ISSUE_URL = 'https://github.com/SDS-Junior-Reviewer-2026-Second/ptest-Jihun/issues/new';
+
+  var CHAR_Y = 168;
+  var STEP_H = 42;
+  var STEP_DX = 6;
+  var MIN_X = 3;
+  var MAX_X = 88;
+  var CHAR_X0 = 20;
+  var STEP_BLOCK_W = 10;
+  var SESSION_TIME = 20;
+  var STEP_TIME_BONUS = 0.4;
+  var DRAIN_SCALE = 0.025;
+
+  var trackEl = document.getElementById('stairsTrack');
+  var charEl = document.getElementById('stairsChar');
+  var overlayEl = document.getElementById('stairsOverlay');
+  var overlayTitleEl = document.getElementById('stairsOverlayTitle');
+  var overlaySubEl = document.getElementById('stairsOverlaySub');
+  var startBtn = document.getElementById('stairsStartBtn');
+  var climbBtn = document.getElementById('stairsClimbBtn');
+  var turnBtn = document.getElementById('stairsTurnBtn');
+  var scoreEl = document.getElementById('stairsScore');
+  var timeFillEl = document.getElementById('stairsTimeFill');
+  var timeItemEl = document.getElementById('stairsTimeItem');
+  var rankEl = document.getElementById('stairsRank');
+  var bestEl = document.getElementById('stairsBest');
+  var shareEl = document.getElementById('stairsShare');
+
+  var state = 'idle';
+  var current = 0;
+  var sides = [];
+  var xPositions = [];
+  var facing = 'L';
+  var remaining = SESSION_TIME;
+  var sessionIntervalId = null;
+
+  function readNum(key) {
+    try { return parseInt(localStorage.getItem(key) || '0', 10) || 0; }
+    catch (e) { return 0; }
+  }
+  function writeNum(key, val) {
+    try { localStorage.setItem(key, String(val)); } catch (e) {}
+  }
+  function rankFor(n) {
+    var r = RANKS[0];
+    for (var i = 0; i < RANKS.length; i++) { if (n >= RANKS[i].at) r = RANKS[i]; }
+    return r;
+  }
+  function updateShareLink(best) {
+    var rank = rankFor(best).name;
+    var title = '무한 계단 기록 자랑: ' + best + '계단 (' + rank + ')';
+    var body = '나 지훈인데 ' + best + '계단까지 올랐다. 현재 직급: ' + rank + '.\n\n다들 얼마나 올랐는지 댓글로 자랑해라.';
+    shareEl.href = ISSUE_URL + '?title=' + encodeURIComponent(title) + '&body=' + encodeURIComponent(body);
+  }
+  function ensureSide(i) {
+    if (sides[i] === undefined) {
+      var prevSide = i === 0 ? 'L' : ensureSide(i - 1);
+      var prevX = i === 0 ? CHAR_X0 : xPositions[i - 1];
+      var side = i === 0 ? prevSide : (Math.random() < 0.55 ? prevSide : (prevSide === 'L' ? 'R' : 'L'));
+      var nextX = prevX + (side === 'R' ? STEP_DX : -STEP_DX);
+      if (nextX > MAX_X || nextX < MIN_X) {
+        side = prevSide === 'L' ? 'R' : 'L';
+        nextX = prevX + (side === 'R' ? STEP_DX : -STEP_DX);
+      }
+      sides[i] = side;
+      xPositions[i] = Math.max(MIN_X, Math.min(MAX_X, nextX));
+    }
+    return sides[i];
+  }
+
+  function renderTrack() {
+    var startIdx = Math.max(0, current - 1);
+    var endIdx = current + 5;
+    var parts = [];
+    for (var i = startIdx; i <= endIdx; i++) {
+      ensureSide(i);
+      var top = CHAR_Y - (i + 1) * STEP_H;
+      var left = xPositions[i];
+      parts.push('<div class="stairs-step" style="top:' + top + 'px;left:' + left + '%"></div>');
+    }
+    trackEl.innerHTML = parts.join('');
+    trackEl.style.transform = 'translateY(' + (current * STEP_H) + 'px)';
+  }
+
+  function popAt(x, y) {
+    var pop = document.createElement('span');
+    pop.className = 'step-pop';
+    pop.textContent = '+1';
+    pop.style.left = x + 'px';
+    pop.style.top = y + 'px';
+    document.body.appendChild(pop);
+    setTimeout(function () { pop.remove(); }, 850);
+  }
+
+  function updateHud() {
+    scoreEl.textContent = String(current);
+    timeFillEl.style.width = Math.min(100, (remaining / SESSION_TIME) * 100) + '%';
+    timeItemEl.dataset.warn = remaining <= 5 ? '1' : '';
+    rankEl.innerHTML = '현재 직급: <b>' + rankFor(current).name + '</b> · 방향: <b id="stairsFacing">' +
+      (facing === 'L' ? '왼쪽' : '오른쪽') + '</b>';
+  }
+
+  function charLeftFor(x) {
+    return Math.max(0, x + STEP_BLOCK_W / 2 - 3) + '%';
+  }
+
+  function resetVisual() {
+    current = 0;
+    sides = [];
+    xPositions = [];
+    facing = 'L';
+    charEl.classList.remove('is-right', 'is-falling', 'is-walking');
+    charEl.style.top = '';
+    charEl.style.left = charLeftFor(CHAR_X0);
+    renderTrack();
+    updateHud();
+  }
+
+  function resolveAction(action) {
+    if (state !== 'running') return;
+    var required = ensureSide(current);
+    var success = action === 'climb' ? (required === facing) : (required !== facing);
+
+    if (success) {
+      current += 1;
+      remaining += STEP_TIME_BONUS;
+      if (action === 'turn') facing = facing === 'L' ? 'R' : 'L';
+      charEl.classList.toggle('is-right', facing === 'R');
+      charEl.style.left = charLeftFor(xPositions[current - 1]);
+      renderTrack();
+      updateHud();
+      var rect = charEl.getBoundingClientRect();
+      popAt(rect.left, rect.top - 6);
+    } else {
+      endGame('wrong');
+    }
+  }
+
+  function tickSession() {
+    if (state !== 'running') return;
+    var speedMult = 1 + current * DRAIN_SCALE;
+    remaining = Math.max(0, remaining - 0.1 * speedMult);
+    updateHud();
+    if (remaining <= 0) endGame('time');
+  }
+
+  function stopTimers() {
+    if (sessionIntervalId) { clearInterval(sessionIntervalId); sessionIntervalId = null; }
+  }
+
+  function startGame() {
+    state = 'running';
+    remaining = SESSION_TIME;
+    resetVisual();
+    overlayEl.hidden = true;
+    climbBtn.disabled = false;
+    turnBtn.disabled = false;
+    charEl.classList.add('is-walking');
+    sessionIntervalId = setInterval(tickSession, 100);
+  }
+
+  function endGame(reason) {
+    state = 'over';
+    stopTimers();
+    climbBtn.disabled = true;
+    turnBtn.disabled = true;
+    charEl.classList.remove('is-walking');
+
+    if (reason === 'wrong') {
+      charEl.classList.add('is-falling');
+    }
+
+    var final = current;
+    var best = readNum(BEST_KEY);
+    var isRecord = final > best;
+    if (isRecord) writeNum(BEST_KEY, final);
+    bestEl.innerHTML = String(Math.max(final, best)) + '<small>역대 최고 계단</small>';
+    updateShareLink(Math.max(final, best));
+
+    overlayTitleEl.textContent = '게임 오버';
+    overlaySubEl.dataset.record = isRecord ? '1' : '';
+    var reasonText = reason === 'wrong' ? '방향을 잘못 짚어 계단에서 굴러떨어졌다.' : '시간 종료.';
+    overlaySubEl.textContent = reasonText + ' ' + final + '계단 (' + rankFor(final).name + ')' + (isRecord ? ' — 신기록!' : '');
+    startBtn.textContent = '다시 도전';
+    overlayEl.hidden = false;
+  }
+
+  startBtn.addEventListener('click', startGame);
+  climbBtn.addEventListener('click', function () { resolveAction('climb'); });
+  turnBtn.addEventListener('click', function () { resolveAction('turn'); });
+
+  document.addEventListener('keydown', function (e) {
+    if (state !== 'running') return;
+    var key = e.key.toLowerCase();
+    if (key === 'z' || e.key === 'ArrowUp') { resolveAction('climb'); e.preventDefault(); }
+    else if (key === 'x' || e.key === 'ArrowDown') { resolveAction('turn'); e.preventDefault(); }
+  });
+
+  climbBtn.disabled = true;
+  turnBtn.disabled = true;
+  bestEl.innerHTML = String(readNum(BEST_KEY)) + '<small>역대 최고 계단</small>';
+  updateShareLink(readNum(BEST_KEY));
+  resetVisual();
+})();
+</script>
+
+<script>
+(function () {
+  /* ── 지훈봇 채팅 위젯 (Gemini API, BYOK) ───── */
+  var fab = document.getElementById('chatFab');
+  if (!fab) return;
+
+  // Cloudflare Worker 배포 후 아래 주소를 본인 Worker URL로 바꿔주세요.
+  // 예: https://jihun-chat-proxy.<본인계정>.workers.dev
+  var WORKER_URL = 'https://jihun-chat-proxy.jihunpark.workers.dev';
+
+  var panel = document.getElementById('chatPanel');
+  var closeBtn = document.getElementById('chatClose');
+  var messagesEl = document.getElementById('chatMessages');
+  var formEl = document.getElementById('chatForm');
+  var inputEl = document.getElementById('chatInput');
+  var sendBtn = document.getElementById('chatSend');
+
+  var MAX_HISTORY = 20;
+
+  // 대화는 브라우저에 저장하지 않고, 채팅창을 닫으면 초기화됩니다.
+  var history = [];
+  var panelRendered = false;
+
+  function scrollToBottom() {
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  }
+
+  function addBubble(role, text) {
+    var el = document.createElement('p');
+    el.className = 'chat-msg';
+    el.dataset.role = role;
+    el.textContent = text;
+    messagesEl.appendChild(el);
+    scrollToBottom();
+    return el;
+  }
+
+  function renderHistory() {
+    messagesEl.innerHTML = '';
+    if (!history.length) {
+      addBubble('bot', '나 지훈인데, 무슨 얘기가 궁금한 것인가?');
+      return;
+    }
+    history.forEach(function (m) { addBubble(m.role === 'user' ? 'user' : 'bot', m.text); });
+  }
+
+  function openPanel() {
+    panel.hidden = false;
+    fab.setAttribute('aria-expanded', 'true');
+    if (!panelRendered) { renderHistory(); panelRendered = true; }
+    inputEl.focus();
+  }
+  function closePanel() {
+    panel.hidden = true;
+    fab.setAttribute('aria-expanded', 'false');
+    history = [];
+    panelRendered = false;
+  }
+
+  fab.addEventListener('click', function () {
+    if (panel.hidden) openPanel(); else closePanel();
+  });
+  closeBtn.addEventListener('click', closePanel);
+
+  function streamGemini(onDelta) {
+    var contents = history.map(function (m) {
+      return { role: m.role === 'user' ? 'user' : 'model', parts: [{ text: m.text }] };
+    });
+
+    return fetch(WORKER_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ contents: contents })
+    }).then(function (res) {
+      if (!res.ok) {
+        return res.json().catch(function () { return null; }).then(function (body) {
+          var msg = body && body.error ? body.error : ('HTTP ' + res.status);
+          throw new Error(msg);
+        });
+      }
+      var reader = res.body.getReader();
+      var decoder = new TextDecoder();
+      var buffer = '';
+      var fullText = '';
+
+      function pump() {
+        return reader.read().then(function (result) {
+          if (result.done) return fullText;
+          buffer += decoder.decode(result.value, { stream: true });
+          var lines = buffer.split('\n');
+          buffer = lines.pop();
+          lines.forEach(function (line) {
+            line = line.trim();
+            if (line.slice(0, 5) !== 'data:') return;
+            var jsonStr = line.slice(5).trim();
+            if (!jsonStr) return;
+            try {
+              var obj = JSON.parse(jsonStr);
+              var cand = obj.candidates && obj.candidates[0];
+              var part = cand && cand.content && cand.content.parts && cand.content.parts[0];
+              if (part && part.text) {
+                fullText += part.text;
+                onDelta(fullText);
+              }
+            } catch (e) { /* 청크가 아직 안 끝났으면 무시하고 다음 청크에서 재시도 */ }
+          });
+          return pump();
+        });
+      }
+      return pump();
+    });
+  }
+
+  formEl.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var text = inputEl.value.trim();
+    if (!text) return;
+
+    inputEl.value = '';
+    addBubble('user', text);
+    history.push({ role: 'user', text: text });
+    if (history.length > MAX_HISTORY) history = history.slice(-MAX_HISTORY);
+
+    sendBtn.disabled = true;
+    inputEl.disabled = true;
+    var bubble = addBubble('bot', '');
+    bubble.classList.add('is-streaming');
+
+    streamGemini(function (partial) {
+      bubble.textContent = partial;
+      scrollToBottom();
+    }).then(function (finalText) {
+      bubble.classList.remove('is-streaming');
+      if (!finalText) {
+        bubble.remove();
+        throw new Error('응답이 비어 있음');
+      }
+      history.push({ role: 'model', text: finalText });
+    }).catch(function (err) {
+      bubble.remove();
+      addBubble('error', '응답 실패: ' + err.message);
+    }).finally(function () {
+      sendBtn.disabled = false;
+      inputEl.disabled = false;
+      inputEl.focus();
+    });
+  });
+})();
+</script>
 
 </body>
 </html>
