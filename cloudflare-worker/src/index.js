@@ -1,5 +1,3 @@
-export { GuestbookRoom } from './guestbook.js';
-
 // 지훈봇 채팅 프록시
 // GEMINI_API_KEY는 코드에 넣지 않고 `npx wrangler secret put GEMINI_API_KEY`로 등록합니다.
 // (Cloudflare 서버에만 저장되며, 이 소스코드나 깃허브에는 절대 노출되지 않습니다.)
@@ -86,15 +84,6 @@ export default {
     var allowedOrigins = getAllowedOrigins(env);
     var origin = request.headers.get('Origin') || '';
     var headers = corsHeaders(origin, allowedOrigins);
-
-    // Route before the Gemini API key check: guestbook needs no AI credentials.
-    if (new URL(request.url).pathname === '/guestbook') {
-      if (allowedOrigins.indexOf(origin) === -1) return json(403, { error: '허용되지 않은 출처입니다.' }, headers);
-      if (request.method !== 'GET') return json(405, { error: 'GET만 허용됩니다.' }, headers);
-      if ((request.headers.get('Upgrade') || '').toLowerCase() !== 'websocket') return json(426, { error: 'WebSocket 연결이 필요합니다.' }, headers);
-      if (!env.GUESTBOOK) return json(503, { error: '방명록 서버가 준비 중입니다.' }, headers);
-      return env.GUESTBOOK.get(env.GUESTBOOK.idFromName('jihun-public-guestbook-v1')).fetch(request);
-    }
 
     if (request.method === 'OPTIONS') {
       return new Response(null, { headers: headers });
