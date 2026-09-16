@@ -1,0 +1,121 @@
+From a43c28d9e03d60ad326b126dbdea896308c20175 Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Mon, 14 Sep 2026 07:37:44 +0000
+Subject: [PATCH] =?UTF-8?q?fix(ci):=20Pages=EA=B0=80=20=EA=BA=BC=EC=A0=B8?=
+ =?UTF-8?q?=20=EC=9E=88=EC=9C=BC=EB=A9=B4=20=EC=8B=A4=ED=8C=A8=20=EB=8C=80?=
+ =?UTF-8?q?=EC=8B=A0=20=EC=95=88=EB=82=B4=EB=A5=BC=20=EB=82=A8=EA=B8=B0?=
+ =?UTF-8?q?=EA=B3=A0=20=EA=B1=B4=EB=84=88=EB=9B=B4=EB=8B=A4?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+enablement로 자동으로 켜려 했으나 GITHUB_TOKEN에는 Pages 사이트 생성
+권한이 없어 "Resource not accessible by integration"으로 실패했다.
+자동화가 불가능하므로 방향을 바꾼다.
+
+배포 전에 Pages 상태를 먼저 확인하고, 소스가 GitHub Actions가 아니면
+남은 단계를 모두 건너뛴 뒤 설정 링크를 job summary와 notice로 남긴다.
+이제 Pages를 켜기 전에도 워크플로가 빨간 X를 남기지 않는다.
+
+Settings에서 한 번 켠 뒤 Run workflow를 실행하면 그대로 배포된다.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01V77PAmBpKDaP1hQvDLuDbc
+---
+ .github/workflows/pages.yml | 52 ++++++++++++++++++++++++++++++++-----
+ CONTRIBUTING.md             |  5 ++--
+ 2 files changed, 49 insertions(+), 8 deletions(-)
+
+diff --git a/.github/workflows/pages.yml b/.github/workflows/pages.yml
+index d33a8cb..52b6891 100644
+--- a/.github/workflows/pages.yml
++++ b/.github/workflows/pages.yml
+@@ -1,7 +1,9 @@
+ # 「박지훈 열전」 페이지를 GitHub Pages로 배포한다.
+-# configure-pages 의 enablement 가 Pages 를 대신 켜 주므로 수동 설정이 필요 없다.
+-# 조직 정책으로 Pages 가 막혀 있으면 이 단계에서 실패하니, 그때만
+-# Settings → Pages → Source 를 "GitHub Actions" 로 직접 바꾸면 된다.
++#
++# 최초 1회만 사람 손이 필요하다.
++#   Settings → Pages → Source 를 "GitHub Actions" 로 변경.
++# GITHUB_TOKEN 으로는 Pages 사이트를 새로 만들 수 없어서(권한 없음) 자동화가 안 된다.
++# 그래서 켜지기 전까지는 실패하지 않고, 무엇을 해야 하는지만 남기고 조용히 넘어간다.
+ name: 열전 배포
+ 
+ on:
+@@ -28,15 +30,53 @@ jobs:
+       name: github-pages
+       url: ${{ steps.deploy.outputs.page_url }}
+     steps:
++      - name: Pages 설정 확인
++        id: check
++        uses: actions/github-script@v7
++        with:
++          script: |
++            const settingsUrl =
++              `https://github.com/${context.repo.owner}/${context.repo.repo}/settings/pages`;
++            let buildType = null;
++            try {
++              const { data } = await github.rest.repos.getPages({ ...context.repo });
++              buildType = data.build_type;
++            } catch (error) {
++              if (error.status !== 404) throw error;
++            }
++
++            const ready = buildType === 'workflow';
++            core.setOutput('ready', String(ready));
++            if (ready) return;
++
++            const reason = buildType === null
++              ? 'Pages가 아직 켜져 있지 않습니다.'
++              : `Pages 소스가 "${buildType}"로 되어 있어 이 워크플로가 배포할 수 없습니다.`;
++
++            core.notice(`${reason} ${settingsUrl} 에서 Source를 "GitHub Actions"로 바꿔 주세요.`);
++            await core.summary
++              .addHeading('열전 배포를 건너뛰었습니다', 3)
++              .addRaw(reason)
++              .addBreak()
++              .addLink('Settings → Pages 에서 Source를 "GitHub Actions"로 변경', settingsUrl)
++              .addRaw(' 한 뒤, 이 워크플로를 Run workflow로 한 번 실행하면 배포됩니다.')
++              .write();
++
+       - uses: actions/checkout@v5
++        if: steps.check.outputs.ready == 'true'
++
+       - uses: actions/configure-pages@v5
+-        with:
+-          # Pages 가 꺼져 있으면 켜고 시작한다 (권한: pages: write)
+-          enablement: true
++        if: steps.check.outputs.ready == 'true'
++
+       - uses: actions/upload-pages-artifact@v3
++        if: steps.check.outputs.ready == 'true'
+         with:
+           path: .
++
+       - id: deploy
++        if: steps.check.outputs.ready == 'true'
+         uses: actions/deploy-pages@v4
++
+       - name: 배포 주소 기록
++        if: steps.check.outputs.ready == 'true'
+         run: echo "### 열전이 갱신되었습니다 → ${{ steps.deploy.outputs.page_url }}" >> "$GITHUB_STEP_SUMMARY"
+diff --git a/CONTRIBUTING.md b/CONTRIBUTING.md
+index 7115773..fd54b3c 100644
+--- a/CONTRIBUTING.md
++++ b/CONTRIBUTING.md
+@@ -28,8 +28,9 @@ git push -u origin feature/본인이름
+ 
+ - **충돌 파수꾼**(`.github/workflows/conflict-guard.yml`)이 기존 파일을 고쳤는지 확인하고 안내를 남깁니다. 막는 검사가 아니라서 PR을 실패시키지 않습니다.
+ - `main`에 들어간 `index.html` 변경은 **열전 배포**(`.github/workflows/pages.yml`)가 GitHub Pages로 올립니다.
+-  Pages가 꺼져 있으면 워크플로가 알아서 켜므로 따로 설정할 것은 없습니다.
+-  조직 정책으로 막혀 있을 때만 `Settings → Pages → Source`를 **GitHub Actions**로 직접 바꿔 주세요.
++  단, 최초 1회는 `Settings → Pages → Source`를 **GitHub Actions**로 직접 바꿔야 합니다.
++  워크플로 토큰에는 Pages를 새로 켤 권한이 없어 이 한 번만 사람 손이 필요합니다.
++  켜기 전까지는 배포를 건너뛰고 안내만 남기므로, PR이나 푸시가 실패하지는 않습니다.
+ 
+ ## 어록을 페이지에도 올리고 싶다면
+ 
+-- 
+2.43.0
+
