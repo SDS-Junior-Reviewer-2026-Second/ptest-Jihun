@@ -10,7 +10,7 @@
 </p>
 
 <p align="center">
-  <a href="https://sds-junior-reviewer-2026-second.github.io/ptest-Jihun/"><b>🐉 박지훈 열전 — 페이지로 보기 (스크롤 애니메이션 + 승진 클리커 게임 수록)</b></a>
+  <a href="https://sds-junior-reviewer-2026-second.github.io/ptest-Jihun/"><b>🐉 박지훈 열전 — 페이지로 보기 (챗봇, 무한계단 게임 포함)</b></a>
 </p>
 
 # 🤖 JihunGPT 정보 업데이트 안내
