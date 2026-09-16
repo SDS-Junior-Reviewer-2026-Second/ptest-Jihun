@@ -8,6 +8,21 @@
   <a href="https://sds-junior-reviewer-2026-second.github.io/ptest-Jihun/"><b>🐉 박지훈 열전 — 페이지로 보기</b></a>
 </p>
 
+# 🤖 JihunGPT 정보 업데이트 안내
+
+JihunGPT는 아래 문서의 내용을 읽어 **지훈PT의 어록, 자기소개, 취향, 업적, 야망, 각종 답변용 정보**를 업데이트합니다.
+https://temp-messanger.web.app/ 에서 @지훈 뒤에 질문해보세요!
+
+* [`README.md`](./README.md)
+* [`jihun.txt`](./jihun.txt)
+* [`jihunadd.txt`](./jihunadd.txt)
+
+> **JihunGPT에 새로운 정보를 반영하고 싶다면 위 문서 중 하나에 텍스트로 추가해 주세요.**
+> 봇은 해당 문서들을 주기적으로 다시 읽으며, `@지훈 동기화`를 호출하면 즉시 최신 내용을 다시 불러올 수 있습니다.
+
+---
+
+
 # 자기 소개, 박지훈의
 
 ## 안녕하다, 나는 2002년에 태어남.
