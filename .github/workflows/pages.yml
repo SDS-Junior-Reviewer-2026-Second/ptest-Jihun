@@ -11,6 +11,7 @@ on:
     branches: [main]
     paths:
       - "index.html"
+      - "assets/**"
       - ".github/workflows/pages.yml"
   workflow_dispatch:
 
